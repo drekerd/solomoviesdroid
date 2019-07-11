@@ -17,6 +17,11 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     private final String TAG = this.getClass().getSimpleName();
     private TextView bestMovies;
+    private final String PROTOCOL = "http://";
+    private final String IP = "192.168.1.232";
+    private final String PORT = ":8080";
+    private final String RESOURCE = "/best/year?year=2010";
+    private final String URI = PROTOCOL + IP + PORT + RESOURCE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         bestMovies = findViewById(R.id.bestMovies);
 
         GetBestMoviesByYear getBestMoviesByYear = new GetBestMoviesByYear();
-        getBestMoviesByYear.execute();
+        Log.d(TAG, "onCreate: URI=" + URI);
+        getBestMoviesByYear.execute(URI);
 
         Log.d(TAG, "onCreate: ended");
     }
@@ -56,4 +62,13 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onOptionsItemSelected() returned: returned");
         return super.onOptionsItemSelected(item);
     }
+
+    public void onDownloadComplete(String data, DownloadStatus status) {
+        if (status == DownloadStatus.OK) {
+            Log.d(TAG, "onDownloadComplete: data is " + data);
+        } else {
+            Log.e(TAG, "onDownloadComplete: failed with status" + status);
+        }
+    }
+
 }
