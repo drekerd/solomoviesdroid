@@ -14,7 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GetBestMoviesByYear.OnDownloadComplete {
     private final String TAG = this.getClass().getSimpleName();
     private TextView bestMovies;
     private final String PROTOCOL = "http://";
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         bestMovies = findViewById(R.id.bestMovies);
 
-        GetBestMoviesByYear getBestMoviesByYear = new GetBestMoviesByYear();
+        GetBestMoviesByYear getBestMoviesByYear = new GetBestMoviesByYear(this);
         Log.d(TAG, "onCreate: URI=" + URI);
         getBestMoviesByYear.execute(URI);
 
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void onDownloadComplete(String data, DownloadStatus status) {
         if (status == DownloadStatus.OK) {
             Log.d(TAG, "onDownloadComplete: data is " + data);

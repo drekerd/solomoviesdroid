@@ -20,17 +20,25 @@ public class GetBestMoviesByYear extends AsyncTask<String, Void, String> {
     private static final String TAG = "GetBestMoviesByYear";
 
     private DownloadStatus mDownloadStatus;
+    private OnDownloadComplete mCallBack;
 
-    public GetBestMoviesByYear() {
+    interface OnDownloadComplete{
+        void onDownloadComplete(String data, DownloadStatus status);
+    }
+
+    public GetBestMoviesByYear(OnDownloadComplete callBack) {
         this.mDownloadStatus = DownloadStatus.IDLE;
+        this.mCallBack = callBack;
     }
 
     @Override
     protected void onPostExecute(String s) {
-        Log.d(TAG, "onPostExecute: ");
+        Log.d(TAG, "onPostExecute: parameter " + s);
+        if(mCallBack != null){
+            mCallBack.onDownloadComplete(s, mDownloadStatus);
+        }
+        Log.d(TAG, "onPostExecute: ends");
     }
-
-
 
     @Override
     protected String doInBackground(String... strings) {
