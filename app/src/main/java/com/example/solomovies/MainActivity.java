@@ -2,6 +2,7 @@ package com.example.solomovies;
 
 import android.os.Bundle;
 
+import com.example.solomovies.movie.Movie;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -14,14 +15,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements GetBestMoviesByYear.OnDownloadComplete {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements GetMovieJsonData.OnDataAvailable {
     private final String TAG = this.getClass().getSimpleName();
     private TextView bestMovies;
     private final String PROTOCOL = "http://";
-    private final String IP = "192.168.1.232";
+    private final String IP = "192.168.1.75";
     private final String PORT = ":8080";
-    private final String RESOURCE = "/best/year?year=2010";
-    private final String URI = PROTOCOL + IP + PORT + RESOURCE;
+    private final String RESOURCE = "/best/year";
+    private final String PARAMS = "?year=2010";
+    private final String URI = PROTOCOL + IP + PORT + RESOURCE + PARAMS;
+    private final String BASE_URI = PROTOCOL + IP + PORT + RESOURCE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +37,19 @@ public class MainActivity extends AppCompatActivity implements GetBestMoviesByYe
         setSupportActionBar(toolbar);
 
         bestMovies = findViewById(R.id.bestMovies);
+        //GetBestMoviesByYear getBestMoviesByYear = new GetBestMoviesByYear(this);
 
-        GetBestMoviesByYear getBestMoviesByYear = new GetBestMoviesByYear(this);
-        Log.d(TAG, "onCreate: URI=" + URI);
-        getBestMoviesByYear.execute(URI);
+        //Log.d(TAG, "onCreate: URI=" + URI);
 
-        Log.d(TAG, "onCreate: ended");
+        //Log.d(TAG, "onCreate: ended");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: starts");
+        GetMovieJsonData getMovieJsonData = new GetMovieJsonData(this, BASE_URI);
+        getMovieJsonData.execute("year" + "2019");
     }
 
     @Override
@@ -64,11 +76,11 @@ public class MainActivity extends AppCompatActivity implements GetBestMoviesByYe
     }
 
     @Override
-    public void onDownloadComplete(String data, DownloadStatus status) {
+    public void onDataAvailable(List<Movie> data, DownloadStatus status) {
         if (status == DownloadStatus.OK) {
-            Log.d(TAG, "onDownloadComplete: data is " + data);
+            Log.d(TAG, "onDataAvailable: data is " + data);
         } else {
-            Log.e(TAG, "onDownloadComplete: failed with status" + status);
+            Log.e(TAG, "onDataAvailable: failed with status" + status);
         }
     }
 

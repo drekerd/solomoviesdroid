@@ -22,7 +22,7 @@ public class GetBestMoviesByYear extends AsyncTask<String, Void, String> {
     private DownloadStatus mDownloadStatus;
     private OnDownloadComplete mCallBack;
 
-    interface OnDownloadComplete{
+    interface OnDownloadComplete {
         void onDownloadComplete(String data, DownloadStatus status);
     }
 
@@ -31,10 +31,19 @@ public class GetBestMoviesByYear extends AsyncTask<String, Void, String> {
         this.mCallBack = callBack;
     }
 
+    void runInSameThread(String s) {
+        Log.d(TAG, "runInSameThread: starts");
+        //onPostExecute(doInBackground(s));
+        if (mCallBack != null) {
+            mCallBack.onDownloadComplete(doInBackground(s), mDownloadStatus);
+        }
+        Log.d(TAG, "runInSameThread: ends");
+    }
+
     @Override
     protected void onPostExecute(String s) {
         Log.d(TAG, "onPostExecute: parameter " + s);
-        if(mCallBack != null){
+        if (mCallBack != null) {
             mCallBack.onDownloadComplete(s, mDownloadStatus);
         }
         Log.d(TAG, "onPostExecute: ends");
