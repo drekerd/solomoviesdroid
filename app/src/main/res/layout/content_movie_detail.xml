@@ -11,39 +11,49 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?actionBarSize"
+        android:padding="8dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/movie_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:text="TextView" />
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/movie_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:scaleType="center"
                     app:srcCompat="@drawable/placeholder" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/movie_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
                     android:text="TextView" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/movie_popularity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:text="TextView" />
 
             </LinearLayout>
